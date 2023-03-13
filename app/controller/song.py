@@ -3,7 +3,7 @@ from flask_restx import Resource
 from typing import Dict, Tuple
 
 from ..dto.song import SongDto
-from ..service.song import save_new_song, get_all_songs, get_length_by_title
+from ..service.song import save_new_song, get_all_songs, get_length_by_title, delete_song
 
 api = SongDto.api
 _song = SongDto.song
@@ -37,6 +37,18 @@ class SongList(Resource):
 
         data = request.json
         return save_new_song(data=data)
+    
+    @api.response(201, "Song succesfully deleted.")
+    @api.doc("delete song")
+    def delete(self):
+        """delete route to delete a song
+        
+        Args: 
+
+        """
+
+        data = request.json
+        return delete_song(data=data)
     
 @api.route("/<title>")
 @api.param("title", "The song title")
