@@ -43,6 +43,7 @@ def save_changes(song: Song) -> None:
     Args:
         song (Song): the song object
     """
+    
     db.session.add(song)
     db.session.commit()
 
@@ -55,5 +56,45 @@ def get_length_by_title(title: str) -> Song:
     Returns:
         [length]: the length             
     """
-    return Song.length.filter_by(title=title).first()
+    return Song.query.filter_by(title=title).first()
 
+
+def get_song_by_id(id: int) -> Song:
+    """get song by id
+    
+    Args:
+        id (int): the id
+
+    Return:
+        [Song]: the song object    
+    """
+    return Song.query.filter_by(id=id).first()
+
+
+def delete_song():
+    """delete song
+
+    Args: 
+        song (Song): the song object
+    """
+    song = get_song_by_id
+    db.session.delete(song)
+    db.session.commit()
+
+
+def update_song(data: Dict [str, str]) -> Tuple[Dict[str, str], int]:
+    """update a book in database
+    
+    Args: 
+        data (Dict[str, str]): Dictionary with id, title, interpret and length
+
+    Returns:
+        Tuple[Dict[str, str], int]: the response object and a status code
+    """
+
+    song = get_song_by_id
+    new_song = Song(id=data["id"], interpret=data["interpret"], titel=data["title"], length=data["length"])
+    response_object = {"status": "success", "message": "Successfully updated song."}
+    return response_object, 201
+
+    
